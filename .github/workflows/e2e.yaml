@@ -162,15 +162,20 @@ jobs:
           verbose: true # optional (default = false)
   
   e2e-windows:
-    name: E2E Windows and Linux Agent Tests
+    name: E2E Windows Tests (${{ matrix.etest }})
     needs: [build, build-windows]
     runs-on: ubuntu-24.04
     timeout-minutes: 135
+    strategy:
+      fail-fast: false
+      matrix:
+        etest: [windows, windowsetcd]
     env:
       E2E_RELEASE_VERSION: skip
       E2E_LINUX_K3S_BIN: ${{ github.workspace }}/dist/artifacts/k3s
       E2E_WINDOWS_K3S_BIN: ${{ github.workspace }}/dist/artifacts/k3s.exe
       E2E_WINDOWS_BOX: gusztavvargadr/windows-server-2025-standard
+      E2E_NODE_MEMORY: ${{ matrix.etest == 'windowsetcd' && '2048' || '4096' }}
     steps:
       - name: Remove Unnecessary Tools
         run: |
@@ -208,18 +213,18 @@ jobs:
         run: |
           vagrant box add cloud-image/ubuntu-24.04 --provider libvirt
           vagrant box add "$E2E_WINDOWS_BOX" --provider libvirt
-      - name: Run Windows and Linux Agent Tests
+      - name: Run ${{ matrix.etest }} Tests
         shell: bash
-        working-directory: tests/e2e/windows
+        working-directory: tests/e2e/${{ matrix.etest }}
         run: go test -v -count=1 -timeout=90m . -ci -ginkgo.timeout=85m 2>&1 | tee windows-e2e.log
       - name: On Failure, Upload Logs
         if: ${{ failure() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: e2e-windows-logs
+          name: e2e-${{ matrix.etest }}-logs
           path: |
-            tests/e2e/windows/vagrant.log
-            tests/e2e/windows/windows-e2e.log
+            tests/e2e/${{ matrix.etest }}/vagrant.log
+            tests/e2e/${{ matrix.etest }}/windows-e2e.log
           retention-days: 30
 
   docker-go:
