@@ -275,7 +275,7 @@ SUDO=
 check_firewall_ports() {
   fw_prog="$1"
   tcp_ports="6443 10250 5001 2379 2380"
-  udp_ports="8472 51820 51821"
+  udp_ports="4789 8472 51820 51821"
   blocked_tcp_ports=""
   blocked_udp_ports=""
   open_ports=""

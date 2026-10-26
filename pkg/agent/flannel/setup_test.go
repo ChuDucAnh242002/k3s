@@ -226,6 +226,9 @@ func Test_UnitcreateFlannelConf(t *testing.T) {
 				`"IPv6Network": "::/0"`,
 				`"EnableIPv6": false`,
 				`"EnableIPv4": true`,
+				`"Type": "vxlan"`,
+				`"VNI": 4096`,
+				`"Port": 4789`,
 			},
 		},
 		{

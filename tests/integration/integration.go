@@ -282,6 +282,12 @@ func K3sCleanup(k3sTestLock int, dataDir string) error {
 	if flannelV6, err := netlink.LinkByName("flannel-v6.1"); err == nil {
 		netlink.LinkDel(flannelV6)
 	}
+	if flannel4096, err := netlink.LinkByName("flannel.4096"); err == nil {
+		netlink.LinkDel(flannel4096)
+	}
+	if flannelV64096, err := netlink.LinkByName("flannel-v6.4096"); err == nil {
+		netlink.LinkDel(flannelV64096)
+	}
 	if dataDir == "" {
 		dataDir = "/var/lib/rancher/k3s"
 	}

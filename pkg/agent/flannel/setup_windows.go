@@ -49,10 +49,4 @@ const (
   ]
 }
 `
-
-	vxlanBackend = `{
-	"Type": "vxlan",
-	"VNI": 4096,
-	"Port": 4789
-}`
 )

@@ -58,7 +58,7 @@ Regarding subnet and backend configuration:
 
 `Network` and `IPv6Network` are set by reading the assigned podCIDR for the Kubernetes node.
 `EnableIPv6` is set based on what the user passed as k3s server `--cluster-cidr`.
-`Backend` uses vxlan as default, although this can be changed using k3s server flag `--flannel-backend`
+`Backend` uses vxlan as default, although this can be changed using k3s server flag `--flannel-backend`. The generated vxlan backend uses VNI `4096` and UDP port `4789` on every platform, as Windows nodes require these values to interoperate with Linux nodes.
 
 Something important to note is that k3s allows the user to override the whole subnet and backend configuration, by using the k3s agent flag `--flannel-conf` and `--flanel-cni-conf`. Overriding the whole subnet and backend configuration is useful if user wants to add specific backend configurations, e.g. VNI for vxlan. Users can currently do this by using `<=option1=val1,option2=val2>` when selecting the backend, but it seldom used and complicates things, thus it was deprecated in favor of `--flannel-conf`.
 

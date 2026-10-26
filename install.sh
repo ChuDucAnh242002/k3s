@@ -855,6 +855,8 @@ remove_interfaces() {
     ip link delete cni0
     ip link delete flannel.1
     ip link delete flannel-v6.1
+    ip link delete flannel.4096
+    ip link delete flannel-v6.4096
     ip link delete kube-ipvs0
     ip link delete flannel-wg
     ip link delete flannel-wg-v6

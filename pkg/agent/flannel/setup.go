@@ -52,6 +52,12 @@ const (
 	"PersistentKeepaliveInterval": 25
 }`
 
+	vxlanBackend = `{
+	"Type": "vxlan",
+	"VNI": 4096,
+	"Port": 4789
+}`
+
 	emptyIPv6Network = "::/0"
 )
 
