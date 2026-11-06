@@ -183,14 +183,14 @@ jobs:
       - name: Set up vagrant and libvirt
         uses: ./.github/actions/vagrant-setup
       - name: Windows Vagrant Boxes R/W Cache
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/test/windows-cache-validation'
         id: windows-boxes-cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.vagrant.d/boxes
           key: vagrant-box-windows-2025-ubuntu-2404-libvirt-v1
       - name: Windows Vagrant Boxes Read Cache
-        if: github.ref != 'refs/heads/main'
+        if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/test/windows-cache-validation'
         id: windows-boxes-read-cache
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:

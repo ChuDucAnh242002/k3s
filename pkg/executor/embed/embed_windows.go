@@ -49,15 +49,8 @@ func waitForSourceVip(networkName string, nodeConfig *daemonconfig.Node) string 
 
 		subnet := network.Subnets[0].AddressPrefix
 
-		configData := `{
-			"cniVersion": "0.2.0",
-			"name": "vxlan0",
-			"ipam": {
-				"type": "host-local",
-				"ranges": [[{"subnet":"` + subnet + `"}]],
-				"dataDir": "/var/lib/cni/networks"
-			}
-		}`
+		// Share the pod IPAM pool so the source VIP cannot also be assigned to a pod.
+		configData := sourceVIPConfig(networkName, subnet)
 
 		cmd := exec.Command("host-local.exe")
 		cmd.Env = append(os.Environ(),
@@ -85,4 +78,16 @@ func waitForSourceVip(networkName string, nodeConfig *daemonconfig.Node) string 
 		return strings.TrimSpace(strings.Split(sourceVipResp.IP4.IP, "/")[0])
 	}
 	return ""
+}
+
+func sourceVIPConfig(networkName, subnet string) string {
+	return `{
+		"cniVersion": "0.2.0",
+		"name": "` + networkName + `",
+		"ipam": {
+			"type": "host-local",
+			"ranges": [[{"subnet":"` + subnet + `"}]],
+			"dataDir": "/var/lib/cni/networks"
+		}
+	}`
 }
